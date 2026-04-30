@@ -37,4 +37,4 @@ Catedrático: César Alejandro Juárez López
 
 ## 📋 Tablero Jira
 
-[Ver tablero del equipo en Jira](https://andresmoln02.atlassian.net/jira/software/projects/SCRUM/boards/1?atlOrigin=eyJpIjoiNzk1NmVjOWMwNDRjNDU4OGI0N2I3YTVhNmMzYzQzMDkiLCJwIjoiaiJ9)
+[Ver tablero del equipo en Jira](https://andresmoln02.atlassian.net/jira/software/projects/CVV/summary?atlOrigin=eyJpIjoiYTMxMDMzNjNlYzkyNDcyZDhkYTlkMDY0MGZjZjU0NTEiLCJwIjoiaiJ9)
