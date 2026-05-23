@@ -41,4 +41,25 @@ public class Casa {
     public boolean tienePropietario() {
         return propietario != null;
     }
+
+    public void agregarPago(Pago pago) {
+        pagos.add(pago);
+    }
+
+    public boolean yaPago(int mes, int anio) {
+        for (Pago pago : pagos) {
+            if (pago.getMes() == mes && pago.getAnio() == anio) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public double getTotalPagado() {
+        double total = 0;
+        for (Pago pago : pagos) {
+            total += pago.getMonto();
+        }
+        return total;
+    }
 }
