@@ -30,4 +30,11 @@ public class Condominio {
     public void setCuotaMensual(double cuotaMensual) {
         this.cuotaMensual = cuotaMensual;
     }
+
+    public Casa getCasa(int numeroCasa) {
+        if (numeroCasa < 1 || numeroCasa > 30) {
+            return null;
+        }
+        return casas.get(numeroCasa - 1);
+    }
 }
