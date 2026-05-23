@@ -15,12 +15,7 @@ public class CondominioService {
     }
 
     public Casa obtenerCasa(int numeroCasa) {
-        for (Casa casa : condominio.getCasas()) {
-            if (casa.getNumeroCasa() == numeroCasa) {
-                return casa;
-            }
-        }
-        return null;
+        return condominio.getCasa(numeroCasa);
     }
 
     public boolean registrarPropietario(int numeroCasa, String nombre, String telefono, String correo) {
@@ -54,14 +49,18 @@ public class CondominioService {
             return false;
         }
 
-        for (Pago pago : casa.getPagos()) {
-            if (pago.getMes() == mes && pago.getAnio() == anio) {
+        if (casa.yaPago(mes, anio)) {
+            return false;
+        }
+
+        for (int m = 1; m < mes; m++) {
+            if (!casa.yaPago(m, anio)) {
                 return false;
             }
         }
 
         Pago nuevoPago = new Pago(mes, anio, condominio.getCuotaMensual(), "Pagado");
-        casa.getPagos().add(nuevoPago);
+        casa.agregarPago(nuevoPago);
         return true;
     }
 
@@ -84,32 +83,10 @@ public class CondominioService {
     public ArrayList<Casa> listarCasasMorosas(int mes, int anio) {
         ArrayList<Casa> morosas = new ArrayList<>();
         for (Casa casa : condominio.getCasas()) {
-            boolean pagado = false;
-            for (Pago pago : casa.getPagos()) {
-                if (pago.getMes() == mes && pago.getAnio() == anio) {
-                    pagado = true;
-                    break;
-                }
-            }
-            if (!pagado) {
+            if (casa.tienePropietario() && !casa.yaPago(mes, anio)) {
                 morosas.add(casa);
             }
         }
         return morosas;
-    }
-
-    public boolean tienePagoEnMes(int numeroCasa, int mes, int anio) {
-        Casa casa = obtenerCasa(numeroCasa);
-
-        if (casa == null) {
-            return false;
-        }
-
-        for (Pago pago : casa.getPagos()) {
-            if (pago.getMes() == mes && pago.getAnio() == anio) {
-                return true;
-            }
-        }
-        return false;
     }
 }
