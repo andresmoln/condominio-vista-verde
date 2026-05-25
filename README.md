@@ -1,67 +1,40 @@
-# 🏡 Sistema de Administración de Condominio Vista Verde
+# 🏘️ Sistema de Administración de Condominio "Vista Verde"
 
-Sistema de escritorio desarrollado en **Java con Java Swing** para la administración de cuotas de mantenimiento del Condominio Vista Verde. Proyecto final del curso de Programación I — Universidad Mariano Gálvez de Guatemala, 2026.
+Sistema de escritorio desarrollado en Java Swing para gestionar el cobro y control
+de cuotas de mantenimiento de las 30 casas del Condominio Vista Verde.
 
-**Facultad de Ingeniería en Sistemas de Información**
-Curso: Programación I | Catedrático: César Alejandro Juárez López
-
----
-
-## 📋 Descripción del Proyecto
-
-El Condominio Vista Verde cuenta con **30 casas** (numeradas del 1 al 30). Este sistema permite al administrador:
-
-- Registrar a los propietarios de cada casa
-- Registrar pagos mensuales de cuota de mantenimiento (Q1,500.00 por defecto)
-- Consultar el estado de cuenta por casa
-- Generar reportes generales de recaudación
-- Identificar casas morosas del mes actual
-- Configurar el monto de la cuota de mantenimiento
-
-> **Recaudación mensual esperada:** Q45,000.00 (30 casas × Q1,500.00)
+**Universidad Mariano Gálvez de Guatemala**  
+Facultad de Ingeniería en Sistemas de Información y Ciencias de la Computación  
+Curso: Programación I  
+Catedrático: César Alejandro Juárez López
 
 ---
 
-## 👥 Integrantes del Equipo
+## 👥 Integrantes del equipo
 
-| Nombre | Carné | Rol |
-|---|---|---|
-| Angel Alexander Zelada Donado | 0900-24-19888 | Líder del proyecto |
-| José Andres Molina Hinestroza | 0900-25-18276 | Desarrollador principal — Modelo y lógica |
-| Jose Carlos Trejo Cartagena | 0900-25-19324 | Desarrollador UI — Pantallas Login e Inicio |
-| Samuel Nehemías Chocojay Sandoval | 0900-25-18814 | Desarrollador UI — Pantallas de Registro |
-| Luis Pablo Argueta Manzo | 0900-25-3857 | Desarrollador UI — Pantallas Cuenta y Configuración |
-| Cristian Geovany Lucho Ramírez | 0900-25-8312 | Documentación |
-
----
-
-## ⚙️ Requisitos para Ejecutar el Proyecto
-
-- **Java JDK 8** o superior instalado
-- **NetBeans IDE 12** o superior (se recomienda la versión con JDK incluido)
-- **Git** instalado
+| Nombre                            | Carné         | Rol        |
+| --------------------------------- | ------------- | ---------- |
+| Angel Alexander Zelada Donado     | 0900-24-19888 | Líder      |
+| Samuel Nehemías Chocojay Sandoval | 0900-25-18814 | Integrante |
+| José Andres Molina Hinestroza     | 0900-25-18276 | Integrante |
+| Cristian Geovany Lucho Ramírez    | 0900-25-8312  | Integrante |
+| Luis Pablo Argueta Manzo          | 0900-25-3857  | Integrante |
+| Jose Carlos Trejo Cartagena       | 0900-25-19324 | Integrante |
 
 ---
 
-## 🚀 Cómo Ejecutar
+## ⚙️ Requisitos para ejecutar el proyecto
 
-```bash
-git clone https://github.com/andresmoln/condominio-vista-verde.git
-```
+- Java JDK 8 o superior (Java Development Kit)
+- IDE recomendado: NetBeans IDE 12 o superior (se recomienda la versión con JDK incluido)
 
-**En NetBeans:**
-1. Ir a **File → Open Project**
-2. Navegar a la carpeta `condominio-vista-verde`
-3. Clic en **Open Project**
-4. Clic derecho sobre el proyecto → **Run** (o F6)
+## ▶️ Cómo ejecutar
 
-### Credenciales de acceso
-
-| Campo | Valor |
-|---|---|
-| Usuario | `iusr_vistaverde` |
-| Contraseña | `R3sidencial2026%` |
+1. Clonar el repositorio: `git clone https://github.com/andresmoln/condominio-vista-verde.git`
+2. Abrir el proyecto en el IDE
 
 ---
 
-## 🗂️ Estructura del Proyecto
+## 📋 Tablero Jira
+
+[Ver tablero del equipo en Jira](https://andresmoln02.atlassian.net/jira/software/projects/CVV/summary?atlOrigin=eyJpIjoiYTMxMDMzNjNlYzkyNDcyZDhkYTlkMDY0MGZjZjU0NTEiLCJwIjoiaiJ9)
