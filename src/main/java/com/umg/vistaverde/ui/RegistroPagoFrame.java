@@ -4,11 +4,14 @@
  */
 package com.umg.vistaverde.ui;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.time.LocalDate;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+
+import com.umg.vistaverde.model.Casa;
+import com.umg.vistaverde.model.Condominio;
+import com.umg.vistaverde.service.CondominioService;
 
 /**
  *
@@ -16,20 +19,30 @@ import javax.swing.JOptionPane;
  */
 public class RegistroPagoFrame extends javax.swing.JFrame {
 
-    private static final Set<String> pagosRegistrados
-            = new HashSet<>();
-
-    private static final double CUOTA_MENSUAL = 500.00;
+    private CondominioService service;
+    private static final double CUOTA_MENSUAL = 1500.00;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(RegistroPagoFrame.class.getName());
 
     /**
      * Creates new form RegistroPagoFrame
      */
-    public RegistroPagoFrame() {
+    public RegistroPagoFrame(
+            CondominioService service
+    ) {
+
+        this.service = service;
+
         initComponents();
+
         cargarCasas();
 
         txtMonto.setText("Q " + CUOTA_MENSUAL);
+
+        setDefaultCloseOperation(
+                javax.swing.WindowConstants.DISPOSE_ON_CLOSE
+        );
+
+        setLocationRelativeTo(null);
     }
 
     private void cargarCasas() {
@@ -64,10 +77,9 @@ public class RegistroPagoFrame extends javax.swing.JFrame {
         cbMes = new javax.swing.JComboBox<>();
         cbAnio = new javax.swing.JComboBox<>();
         txtMonto = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jLabel1.setText("REGISTRO DE PAGO");
 
         jLabel2.setText("Número de Casa");
 
@@ -90,6 +102,9 @@ public class RegistroPagoFrame extends javax.swing.JFrame {
         txtMonto.setEditable(false);
         txtMonto.addActionListener(this::txtMontoActionPerformed);
 
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel6.setText("Registro de Pago de Cuota");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -97,36 +112,39 @@ public class RegistroPagoFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(44, 44, 44)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5))
-                        .addGap(12, 12, 12)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(cbMes, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cbCasa, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cbAnio, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtMonto, javax.swing.GroupLayout.Alignment.TRAILING)))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(100, 100, 100)
                         .addComponent(btnRegistrarPago))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(138, 138, 138)
-                        .addComponent(jLabel1)))
-                .addContainerGap(152, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(btnVolver)
-                .addGap(91, 91, 91))
+                        .addGap(250, 250, 250)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(44, 44, 44)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnVolver)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel3)
+                                        .addComponent(jLabel2)
+                                        .addComponent(jLabel4)
+                                        .addComponent(jLabel5))
+                                    .addGap(12, 12, 12)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(cbMes, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(cbCasa, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(cbAnio, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(txtMonto, javax.swing.GroupLayout.Alignment.TRAILING)))
+                                .addComponent(jLabel6)))))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(18, 18, 18)
+                .addGap(5, 5, 5)
                 .addComponent(jLabel1)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(cbCasa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -144,9 +162,9 @@ public class RegistroPagoFrame extends javax.swing.JFrame {
                     .addComponent(txtMonto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(btnRegistrarPago)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(btnVolver)
-                .addGap(14, 14, 14))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         pack();
@@ -155,74 +173,83 @@ public class RegistroPagoFrame extends javax.swing.JFrame {
     private void btnRegistrarPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarPagoActionPerformed
         Integer casa
                 = (Integer) cbCasa.getSelectedItem();
+        //Casa casaSeleccionada = condominio.getCasa(casa);
+        //if (!casaSeleccionada.tienePropietario()) {
 
-        String mes
-                = cbMes.getSelectedItem().toString();
+        //JOptionPane.showMessageDialog(
+        //this,
+        //"La casa seleccionada no tiene propietario registrado."
+        //);
+        //return;
+        //}
+        String mes = cbMes.getSelectedItem().toString();
+        int numeroMes
+                = cbMes.getSelectedIndex() + 1;
 
         String anio
                 = cbAnio.getSelectedItem().toString();
+        int anioSeleccionado = Integer.parseInt(anio);
 
-        String clavePago
-                = casa + "-" + mes + "-" + anio;
+        int anioActual = LocalDate.now().getYear();
 
-        if (pagosRegistrados.contains(clavePago)) {
+        if (anioSeleccionado > anioActual) {
 
             JOptionPane.showMessageDialog(
                     this,
-                    "Este pago ya fue registrado."
+                    "No se permiten pagos de años futuros."
             );
 
             return;
         }
 
-        String[] meses = {
-            "Enero",
-            "Febrero",
-            "Marzo",
-            "Abril",
-            "Mayo",
-            "Junio",
-            "Julio",
-            "Agosto",
-            "Septiembre",
-            "Octubre",
-            "Noviembre",
-            "Diciembre"
-        };
+        LocalDate fechaActual = LocalDate.now();
 
-        int indiceMesSeleccionado = -1;
+        int mesActual = fechaActual.getMonthValue() - 1;
 
-        for (int i = 0; i < meses.length; i++) {
+        if (anioSeleccionado == anioActual
+                && numeroMes > (mesActual + 1)) {
 
-            if (meses[i].equals(mes)) {
-                indiceMesSeleccionado = i;
-                break;
-            }
+            JOptionPane.showMessageDialog(
+                    this,
+                    "No se permiten pagos de meses futuros."
+            );
+
+            return;
         }
 
-        for (int i = 0; i < indiceMesSeleccionado; i++) {
-
-            String pagoAnterior
-                    = casa + "-" + meses[i] + "-" + anio;
-
-            if (!pagosRegistrados.contains(pagoAnterior)) {
-
-                JOptionPane.showMessageDialog(
-                        this,
-                        "No puede pagar meses futuros "
-                        + "sin pagar los anteriores."
-                );
-
-                return;
-            }
-        }
-
-        pagosRegistrados.add(clavePago);
-
-        JOptionPane.showMessageDialog(
-                this,
-                "Pago registrado correctamente."
+        boolean exito = service.registrarPago(
+                casa,
+                numeroMes,
+                anioSeleccionado
         );
+
+        if (exito) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Pago registrado correctamente.\n\n"
+                    + "Casa: " + casa + "\n"
+                    + "Mes: " + mes + " " + anio + "\n"
+                    + "Monto: Q " + CUOTA_MENSUAL
+            );
+
+            cbCasa.setSelectedIndex(0);
+            cbMes.setSelectedIndex(0);
+            cbAnio.setSelectedIndex(0);
+
+        } else {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Error: no se pudo registrar el pago.\n"
+                    + "Puede ser por:\n"
+                    + "- Pago duplicado\n"
+                    + "- Meses anteriores sin pagar\n"
+                    + "- Casa sin propietario"
+            );
+        }
+
+
     }//GEN-LAST:event_btnRegistrarPagoActionPerformed
 
     private void txtMontoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMontoActionPerformed
@@ -238,11 +265,7 @@ public class RegistroPagoFrame extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -250,13 +273,18 @@ public class RegistroPagoFrame extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(RegistroPagoFrame.class.getName())
+                    .log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new RegistroPagoFrame().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> {
+
+            Condominio condominio = new Condominio();
+            CondominioService service = new CondominioService(condominio);
+
+            new RegistroPagoFrame(service).setVisible(true);
+        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -270,6 +298,7 @@ public class RegistroPagoFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JTextField txtMonto;
     // End of variables declaration//GEN-END:variables
 }

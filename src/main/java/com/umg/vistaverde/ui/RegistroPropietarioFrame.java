@@ -4,8 +4,9 @@
  */
 package com.umg.vistaverde.ui;
 
-import java.util.HashSet;
-import java.util.Set;
+import com.umg.vistaverde.model.Condominio;
+import com.umg.vistaverde.service.CondominioService;
+
 import java.util.regex.Pattern;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
@@ -16,17 +17,74 @@ import javax.swing.JOptionPane;
  */
 public class RegistroPropietarioFrame extends javax.swing.JFrame {
 
-    private static final Set<Integer> casasRegistradas = new HashSet<>();
-    private static final Set<String> correosRegistrados = new HashSet<>();
+    private CondominioService service;
+
+// METODO 
+    private String capitalizarNombre(String nombre) {
+
+        nombre = nombre.trim().replaceAll("\\s+", " ");
+
+        String[] conectores = {
+            "de", "del", "la", "las", "los", "y"
+        };
+
+        String[] palabras = nombre.toLowerCase().split(" ");
+
+        StringBuilder resultado = new StringBuilder();
+
+        for (String palabra : palabras) {
+
+            boolean esConector = false;
+
+            for (String conector : conectores) {
+
+                if (palabra.equals(conector)) {
+                    esConector = true;
+                    break;
+                }
+            }
+
+            if (esConector) {
+
+                resultado.append(palabra);
+
+            } else {
+
+                resultado.append(
+                        Character.toUpperCase(palabra.charAt(0))
+                );
+
+                resultado.append(
+                        palabra.substring(1)
+                );
+            }
+
+            resultado.append(" ");
+        }
+
+        return resultado.toString().trim();
+    }
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(RegistroPropietarioFrame.class.getName());
 
     /**
      * Creates new form RegistroPropietarioFrame
      */
-    public RegistroPropietarioFrame() {
+    public RegistroPropietarioFrame(
+            CondominioService service
+    ) {
+
+        this.service = service;
+
         initComponents();
+
         cargarCasasDisponibles();
+
+        setDefaultCloseOperation(
+                javax.swing.WindowConstants.DISPOSE_ON_CLOSE
+        );
+
+        setLocationRelativeTo(null);
     }
 
     private void cargarCasasDisponibles() {
@@ -36,7 +94,8 @@ public class RegistroPropietarioFrame extends javax.swing.JFrame {
 
         for (int i = 1; i <= 30; i++) {
 
-            if (!casasRegistradas.contains(i)) {
+            if (!service.obtenerCasa(i).tienePropietario()) {
+
                 modelo.addElement(i);
             }
         }
@@ -63,6 +122,7 @@ public class RegistroPropietarioFrame extends javax.swing.JFrame {
         btnRegistrar = new javax.swing.JButton();
         btnVolver = new javax.swing.JButton();
         cbCasa = new javax.swing.JComboBox<>();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -74,6 +134,8 @@ public class RegistroPropietarioFrame extends javax.swing.JFrame {
 
         jLabel4.setText("Correo Electrónico");
 
+        txtNombre.addActionListener(this::txtNombreActionPerformed);
+
         btnRegistrar.setText("REGISTRAR");
         btnRegistrar.addActionListener(this::btnRegistrarActionPerformed);
 
@@ -82,50 +144,58 @@ public class RegistroPropietarioFrame extends javax.swing.JFrame {
 
         cbCasa.addActionListener(this::cbCasaActionPerformed);
 
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel5.setText("Registro de Propietario");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel1)
-                            .addComponent(txtNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(txtTelefono, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                    .addComponent(jLabel2)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(cbCasa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(txtCorreo))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(144, 144, 144)
-                .addComponent(btnRegistrar)
-                .addContainerGap(168, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnVolver)
-                .addContainerGap())
+                .addGap(16, 16, 16))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(151, 151, 151)
+                        .addComponent(btnRegistrar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel4)
+                            .addComponent(txtTelefono, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)
+                            .addComponent(txtCorreo)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cbCasa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(19, 57, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(28, 28, 28)
+                .addContainerGap(18, Short.MAX_VALUE)
+                .addComponent(jLabel5)
+                .addGap(12, 12, 12)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
                     .addComponent(cbCasa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -133,9 +203,9 @@ public class RegistroPropietarioFrame extends javax.swing.JFrame {
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnRegistrar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addGap(8, 8, 8)
                 .addComponent(btnVolver)
                 .addContainerGap())
         );
@@ -144,7 +214,12 @@ public class RegistroPropietarioFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
-        String nombre = txtNombre.getText().trim();
+        String nombre = capitalizarNombre(
+                txtNombre.getText()
+        );
+
+        //aquí carnal, borrar linea 223
+        //JOptionPane.showMessageDialog(this, nombre);
         String telefono = txtTelefono.getText().trim();
         String correo = txtCorreo.getText().trim().toLowerCase();
 
@@ -227,17 +302,6 @@ public class RegistroPropietarioFrame extends javax.swing.JFrame {
 
             return;
         }
-
-        if (correosRegistrados.contains(correo)) {
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Este correo ya está registrado."
-            );
-
-            return;
-        }
-
         Integer casaSeleccionada
                 = (Integer) cbCasa.getSelectedItem();
 
@@ -250,17 +314,31 @@ public class RegistroPropietarioFrame extends javax.swing.JFrame {
 
             return;
         }
-
-        casasRegistradas.add(casaSeleccionada);
-
-        correosRegistrados.add(correo);
-
-        cbCasa.removeItem(casaSeleccionada);
-
-        JOptionPane.showMessageDialog(
-                this,
-                "Propietario registrado correctamente."
+        boolean exito = service.registrarPropietario(
+                casaSeleccionada,
+                nombre,
+                telefono,
+                correo
         );
+
+        if (exito) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Propietario registrado correctamente."
+            );
+
+            cbCasa.removeItem(casaSeleccionada);
+
+        } else {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Error: la casa ya tiene propietario "
+            );
+
+            return;
+        }
 
         txtNombre.setText("");
         txtTelefono.setText("");
@@ -280,6 +358,10 @@ public class RegistroPropietarioFrame extends javax.swing.JFrame {
     private void cbCasaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbCasaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbCasaActionPerformed
+
+    private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNombreActionPerformed
 
     /**
      * @param args the command line arguments
@@ -303,9 +385,17 @@ public class RegistroPropietarioFrame extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new RegistroPropietarioFrame().setVisible(true));
-    }
+        java.awt.EventQueue.invokeLater(() -> {
 
+            Condominio condominio = new Condominio();
+
+            CondominioService service
+                    = new CondominioService(condominio);
+
+            new RegistroPropietarioFrame(service)
+                    .setVisible(true);
+        });
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRegistrar;
     private javax.swing.JButton btnVolver;
@@ -314,6 +404,7 @@ public class RegistroPropietarioFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JTextField txtCorreo;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtTelefono;
