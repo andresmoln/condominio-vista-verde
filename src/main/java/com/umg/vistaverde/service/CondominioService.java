@@ -89,4 +89,13 @@ public class CondominioService {
         }
         return morosas;
     }
+    
+    public double obtenerCuotaActual(){
+        return condominio.getCuotaMensual();
+    }
+    
+    public void actualizarCuota(double nuevaCuota){
+        condominio.setCuotaMensual(nuevaCuota);
+    }
+    
 }
