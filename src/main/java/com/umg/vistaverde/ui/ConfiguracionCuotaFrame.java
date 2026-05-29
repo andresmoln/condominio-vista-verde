@@ -7,18 +7,22 @@ import javax.swing.JOptionPane;
 
 public class ConfiguracionCuotaFrame extends javax.swing.JFrame {
 
-   private Condominio condominio;
+   
    private CondominioService service;
     
     
-    public ConfiguracionCuotaFrame() {
-        initComponents();
+    public ConfiguracionCuotaFrame(CondominioService service) {
+      
         
-        condominio = new Condominio();
-        service = new CondominioService(condominio);
-        
-        lblCuotaActual.setText("Cuota acutal: Q"+ service.obtenerCuotaActual());
-        
+       this.service = service;
+
+       initComponents();
+
+       lblCuotaActual.setText(
+            "Cuota actual: Q" +
+            service.obtenerCuotaActual()
+       );
+
     }
 
    
@@ -194,7 +198,11 @@ public class ConfiguracionCuotaFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ConfiguracionCuotaFrame().setVisible(true);
+              //  new ConfiguracionCuotaFrame(service).setVisible(true);
+              Condominio condominio = new Condominio();
+              CondominioService service = new CondominioService(condominio);
+              
+              new ConfiguracionCuotaFrame(service).setVisible(true);
             }
         });
     }

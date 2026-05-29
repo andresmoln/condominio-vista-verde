@@ -8,16 +8,16 @@ import com.umg.vistaverde.model.Pago;
 
 
 public class EstadoCuentaFrame extends javax.swing.JFrame {
-private Condominio condominio;
+
 private CondominioService service;
    
 
 
-    public EstadoCuentaFrame() {
-        initComponents();
+    public EstadoCuentaFrame(CondominioService service) {
         
-    condominio = new Condominio();
-    service = new CondominioService(condominio);
+    initComponents();
+        
+    this.service = service;
 
     cargarCasas();
         
@@ -240,7 +240,15 @@ private CondominioService service;
  
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new EstadoCuentaFrame().setVisible(true);
+                //new EstadoCuentaFrame().setVisible(true);
+                
+                Condominio condominio = new Condominio();
+                
+                CondominioService service = 
+                        new CondominioService(condominio);
+                
+                new EstadoCuentaFrame(service)
+                        .setVisible(true);
             }
         });
     }
