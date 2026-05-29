@@ -16,6 +16,7 @@ private CondominioService service;
     public EstadoCuentaFrame(CondominioService service) {
         
     initComponents();
+    this.setLocationRelativeTo(null);
         
     this.service = service;
 
