@@ -1,31 +1,26 @@
-
 package com.umg.vistaverde.ui;
+
 import com.umg.vistaverde.model.Condominio;
 import com.umg.vistaverde.service.CondominioService;
 import javax.swing.JOptionPane;
 
-
 public class ConfiguracionCuotaFrame extends javax.swing.JFrame {
 
-   
-   private CondominioService service;
-    
-    
-    public ConfiguracionCuotaFrame(CondominioService service) {
-      
-        
-       this.service = service;
+    private CondominioService service;
 
-       initComponents();
-       this.setLocationRelativeTo(null);
-       lblCuotaActual.setText(
-            "Cuota actual: Q" +
-            service.obtenerCuotaActual()
-       );
+    public ConfiguracionCuotaFrame(CondominioService service) {
+
+        this.service = service;
+
+        initComponents();
+        this.setLocationRelativeTo(null);
+        lblCuotaActual.setText(
+                "Cuota actual: Q"
+                + service.obtenerCuotaActual()
+        );
 
     }
 
-   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -125,36 +120,47 @@ public class ConfiguracionCuotaFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnActualizarCuotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarCuotaActionPerformed
-        
+
         String textoCuota = txtNuevaCuota.getText();
+
+        if (!textoCuota.matches("^\\d+(\\.\\d{1,2})?$")) {
+
+    JOptionPane.showMessageDialog(
+            this,
+            "Ingrese una cantidad válida con máximo 2 decimales"
+    );
+
+    return;
+}
         
         try {
-            
-        
-        double nuevaCuota = Double.parseDouble(textoCuota);
-        
-        if (nuevaCuota <= 0 ){
-            JOptionPane.showMessageDialog(this,"la cuota no puede ser cero o negativa");
-            
-            return;    
+
+            double nuevaCuota = Double.parseDouble(textoCuota);
+
+            if (nuevaCuota < 100 || nuevaCuota > 100000) {
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "La cuota debe estar entre Q100 y Q100000"
+                );
+
+                return;
+            }
+
+            int confirmacion = JOptionPane.showConfirmDialog(this, "¿Está seguro que desea cambiar la cuota a Q" + nuevaCuota + "?", "Confirmar actualización", JOptionPane.YES_NO_OPTION);
+
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                service.actualizarCuota(nuevaCuota);
+                lblCuotaActual.setText("Cuota actual: Q" + service.obtenerCuotaActual());
+
+                JOptionPane.showMessageDialog(this,
+                        "Cuota actualizada correctamente");
+            }
+        } catch (NumberFormatException e) {
+
+            JOptionPane.showMessageDialog(this, "Ingrese un número válido");
         }
-        
-        int confirmacion = JOptionPane.showConfirmDialog(this, "¿Está seguro que desea cambiar la cuota a Q" + nuevaCuota +"?","Confirmar actualización", JOptionPane.YES_NO_OPTION);
-           
-        if (confirmacion == JOptionPane.YES_OPTION){
-            service.actualizarCuota(nuevaCuota);
-            lblCuotaActual.setText("Cuota actual: Q" + service.obtenerCuotaActual());
-            
-            JOptionPane.showMessageDialog(this,
-            "Cuota actualizada correctamente");
-        }
-        }
-        
-        catch (NumberFormatException e){
-            
-                JOptionPane.showMessageDialog(this, "Ingrese un número válido");
-                }
-        
+
     }//GEN-LAST:event_btnActualizarCuotaActionPerformed
 
     private void txtNuevaCuotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNuevaCuotaActionPerformed
@@ -162,6 +168,7 @@ public class ConfiguracionCuotaFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_txtNuevaCuotaActionPerformed
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
+        new InicioFrame(service).setVisible(true);
         dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 
@@ -198,11 +205,9 @@ public class ConfiguracionCuotaFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-              //  new ConfiguracionCuotaFrame(service).setVisible(true);
-              Condominio condominio = new Condominio();
-              CondominioService service = new CondominioService(condominio);
-              
-              new ConfiguracionCuotaFrame(service).setVisible(true);
+                com.umg.vistaverde.model.Condominio condominio = new com.umg.vistaverde.model.Condominio();
+                com.umg.vistaverde.service.CondominioService service = new com.umg.vistaverde.service.CondominioService(condominio);
+                new ConfiguracionCuotaFrame(service).setVisible(true);
             }
         });
     }

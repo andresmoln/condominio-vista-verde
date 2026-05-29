@@ -108,21 +108,27 @@ public class InicioFrame extends JFrame {
         // Los nombres de clase deben coincidir exactamente con los de tus compañeros
         panelGrid.add(crearBoton("Registro de\nPropietario", new Color(21, 101, 192), () -> {
             new RegistroPropietarioFrame(service).setVisible(true);
+            dispose();
         }));
         panelGrid.add(crearBoton("Registro de\nPago", new Color(106, 27, 154), () -> {
             new RegistroPagoFrame(service).setVisible(true);
+            dispose();
         }));
         panelGrid.add(crearBoton("Configuración\nde Cuota", new Color(230, 81, 0), () -> {
             new ConfiguracionCuotaFrame(service).setVisible(true);
+            dispose();
         }));
         panelGrid.add(crearBoton("Estado de\nCuenta", new Color(0, 105, 92), () -> {
             new EstadoCuentaFrame(service).setVisible(true);
+            dispose();
         }));
         panelGrid.add(crearBoton("Reporte\nGeneral", new Color(136, 14, 79), () -> {
-            JOptionPane.showMessageDialog(this, "Módulo: Reporte General\n(En desarrollo)", "Vista Verde", JOptionPane.INFORMATION_MESSAGE);
+new ReporteGeneralFrame(service).setVisible(true);
+                dispose();
         }));
         panelGrid.add(crearBoton("Casas\nMorosas", new Color(183, 28, 28), () -> {
-            JOptionPane.showMessageDialog(this, "Módulo: Casas Morosas\n(En desarrollo)", "Vista Verde", JOptionPane.INFORMATION_MESSAGE);
+new CasasMorosasFrame(service).setVisible(true);
+dispose();
         }));
 
         panelCentral.add(panelGrid, BorderLayout.CENTER);
