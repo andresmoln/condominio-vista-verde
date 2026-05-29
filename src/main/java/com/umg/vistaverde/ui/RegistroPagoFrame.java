@@ -20,7 +20,6 @@ import com.umg.vistaverde.service.CondominioService;
 public class RegistroPagoFrame extends javax.swing.JFrame {
 
     private CondominioService service;
-    private static final double CUOTA_MENSUAL = 1500.00;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(RegistroPagoFrame.class.getName());
 
     /**
@@ -36,7 +35,7 @@ public class RegistroPagoFrame extends javax.swing.JFrame {
 
         cargarCasas();
 
-        txtMonto.setText("Q " + CUOTA_MENSUAL);
+        txtMonto.setText("Q " + service.obtenerCuotaActual());
 
         setDefaultCloseOperation(
                 javax.swing.WindowConstants.DISPOSE_ON_CLOSE
@@ -230,7 +229,7 @@ public class RegistroPagoFrame extends javax.swing.JFrame {
                     "Pago registrado correctamente.\n\n"
                     + "Casa: " + casa + "\n"
                     + "Mes: " + mes + " " + anio + "\n"
-                    + "Monto: Q " + CUOTA_MENSUAL
+                    + "Monto: Q " + service.obtenerCuotaActual()
             );
 
             cbCasa.setSelectedIndex(0);

@@ -17,7 +17,7 @@ public class ConfiguracionCuotaFrame extends javax.swing.JFrame {
        this.service = service;
 
        initComponents();
-
+       this.setLocationRelativeTo(null);
        lblCuotaActual.setText(
             "Cuota actual: Q" +
             service.obtenerCuotaActual()
