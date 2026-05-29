@@ -8,8 +8,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 /**
- * Pantalla de Login
- * Sistema de Administración de Condominio Vista Verde
+ * Pantalla de Login Sistema de Administración de Condominio Vista Verde
  * Universidad Mariano Gálvez de Guatemala — Programación I
  *
  * @author Jose Trejo
@@ -17,16 +16,16 @@ import java.awt.event.KeyEvent;
 public class LoginFrame extends JFrame {
 
     // ── Credenciales válidas ──────────────────────────────────────────────────
-    private static final String USUARIO_VALIDO  = "iusr_vistaverde";
+    private static final String USUARIO_VALIDO = "iusr_vistaverde";
     private static final String PASSWORD_VALIDA = "R3sidencial2026%";
 
     // ── Servicio compartido ───────────────────────────────────────────────────
     private CondominioService service;
 
     // ── Componentes ───────────────────────────────────────────────────────────
-    private JTextField     txtUsuario;
+    private JTextField txtUsuario;
     private JPasswordField txtPassword;
-    private JLabel         lblMensaje;
+    private JLabel lblMensaje;
 
     // ─────────────────────────────────────────────────────────────────────────
     // Constructor — recibe el CondominioService compartido
@@ -35,11 +34,20 @@ public class LoginFrame extends JFrame {
         this.service = service;
         initComponents();
         setLocationRelativeTo(null);
+
+        // Guardar al cerrar con la X
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                service.guardarDatos();
+            }
+        });
     }
+
     public LoginFrame() {
-        
 
     }
+
     // ─────────────────────────────────────────────────────────────────────────
     // Interfaz gráfica
     // ─────────────────────────────────────────────────────────────────────────
@@ -79,14 +87,16 @@ public class LoginFrame extends JFrame {
         panelForm.setBorder(new EmptyBorder(32, 50, 24, 50));
 
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill   = GridBagConstraints.HORIZONTAL;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(6, 8, 6, 8);
 
         JLabel lblAcceso = new JLabel("Acceso al Sistema");
         lblAcceso.setFont(new Font("SansSerif", Font.BOLD, 15));
         lblAcceso.setForeground(new Color(27, 94, 32));
-        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 2;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
         gbc.insets = new Insets(0, 8, 18, 8);
         panelForm.add(lblAcceso, gbc);
 
@@ -96,7 +106,8 @@ public class LoginFrame extends JFrame {
         // Usuario
         JLabel lblUsuario = new JLabel("Usuario:");
         lblUsuario.setFont(new Font("SansSerif", Font.PLAIN, 13));
-        gbc.gridx = 0; gbc.gridy = 1;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
         panelForm.add(lblUsuario, gbc);
 
         txtUsuario = new JTextField(20);
@@ -104,13 +115,15 @@ public class LoginFrame extends JFrame {
         txtUsuario.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(189, 189, 189)),
                 new EmptyBorder(6, 8, 6, 8)));
-        gbc.gridx = 1; gbc.gridy = 1;
+        gbc.gridx = 1;
+        gbc.gridy = 1;
         panelForm.add(txtUsuario, gbc);
 
         // Contraseña
         JLabel lblPass = new JLabel("Contraseña:");
         lblPass.setFont(new Font("SansSerif", Font.PLAIN, 13));
-        gbc.gridx = 0; gbc.gridy = 2;
+        gbc.gridx = 0;
+        gbc.gridy = 2;
         panelForm.add(lblPass, gbc);
 
         txtPassword = new JPasswordField(20);
@@ -118,7 +131,8 @@ public class LoginFrame extends JFrame {
         txtPassword.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(189, 189, 189)),
                 new EmptyBorder(6, 8, 6, 8)));
-        gbc.gridx = 1; gbc.gridy = 2;
+        gbc.gridx = 1;
+        gbc.gridy = 2;
         panelForm.add(txtPassword, gbc);
 
         // Mensaje error
@@ -126,7 +140,9 @@ public class LoginFrame extends JFrame {
         lblMensaje.setFont(new Font("SansSerif", Font.ITALIC, 12));
         lblMensaje.setForeground(new Color(198, 40, 40));
         lblMensaje.setHorizontalAlignment(SwingConstants.CENTER);
-        gbc.gridx = 0; gbc.gridy = 3; gbc.gridwidth = 2;
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 2;
         gbc.insets = new Insets(4, 8, 4, 8);
         panelForm.add(lblMensaje, gbc);
 
@@ -153,7 +169,9 @@ public class LoginFrame extends JFrame {
         panelBotones.add(btnIngresar);
         panelBotones.add(btnLimpiar);
 
-        gbc.gridx = 0; gbc.gridy = 4; gbc.gridwidth = 2;
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.gridwidth = 2;
         gbc.insets = new Insets(12, 8, 8, 8);
         panelForm.add(panelBotones, gbc);
 
@@ -172,14 +190,20 @@ public class LoginFrame extends JFrame {
         btnLimpiar.addActionListener(e -> limpiarCampos());
 
         txtUsuario.addKeyListener(new KeyAdapter() {
-            @Override public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) txtPassword.requestFocus();
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    txtPassword.requestFocus();
+                }
             }
         });
 
         txtPassword.addKeyListener(new KeyAdapter() {
-            @Override public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) validarCredenciales();
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    validarCredenciales();
+                }
             }
         });
 
@@ -190,7 +214,7 @@ public class LoginFrame extends JFrame {
     // Lógica de validación
     // ─────────────────────────────────────────────────────────────────────────
     private void validarCredenciales() {
-        String usuario  = txtUsuario.getText().trim();
+        String usuario = txtUsuario.getText().trim();
         String password = new String(txtPassword.getPassword());
 
         if (usuario.isEmpty() || password.isEmpty()) {

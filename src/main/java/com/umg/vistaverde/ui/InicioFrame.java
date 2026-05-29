@@ -9,9 +9,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 /**
- * Pantalla de Inicio / Menú Principal
- * Sistema de Administración de Condominio Vista Verde
- * Universidad Mariano Gálvez de Guatemala — Programación I
+ * Pantalla de Inicio / Menú Principal Sistema de Administración de Condominio
+ * Vista Verde Universidad Mariano Gálvez de Guatemala — Programación I
  *
  * @author Jose Trejo
  */
@@ -123,12 +122,12 @@ public class InicioFrame extends JFrame {
             dispose();
         }));
         panelGrid.add(crearBoton("Reporte\nGeneral", new Color(136, 14, 79), () -> {
-new ReporteGeneralFrame(service).setVisible(true);
-                dispose();
+            new ReporteGeneralFrame(service).setVisible(true);
+            dispose();
         }));
         panelGrid.add(crearBoton("Casas\nMorosas", new Color(183, 28, 28), () -> {
-new CasasMorosasFrame(service).setVisible(true);
-dispose();
+            new CasasMorosasFrame(service).setVisible(true);
+            dispose();
         }));
 
         panelCentral.add(panelGrid, BorderLayout.CENTER);
@@ -169,14 +168,15 @@ dispose();
             protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                g2.setColor(getModel().isPressed()  ? new Color(240, 240, 240) :
-                            getModel().isRollover() ? new Color(250, 250, 250) : Color.WHITE);
+                g2.setColor(getModel().isPressed() ? new Color(240, 240, 240)
+                        : getModel().isRollover() ? new Color(250, 250, 250) : Color.WHITE);
                 g2.fillRoundRect(0, 0, getWidth(), getHeight(), 10, 10);
                 g2.setColor(colorAcento);
                 g2.fillRoundRect(0, 0, getWidth(), 5, 4, 4);
                 g2.dispose();
                 super.paintComponent(g);
             }
+
             @Override
             protected void paintBorder(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
@@ -208,6 +208,7 @@ dispose();
                 "¿Desea cerrar la sesión?", "Cerrar Sesión",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (op == JOptionPane.YES_OPTION) {
+            service.guardarDatos();
             new LoginFrame(service).setVisible(true);
             dispose();
         }

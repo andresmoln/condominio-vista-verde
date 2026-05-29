@@ -9,6 +9,7 @@ public class CondominioVistaVerde {
     public static void main(String[] args) {
         javax.swing.SwingUtilities.invokeLater(() -> {
             CondominioService service = new CondominioService(new Condominio());
+            service.cargarDatos(); // ← carga los datos al iniciar
             new LoginFrame(service).setVisible(true);
         });
     }
