@@ -236,11 +236,11 @@ public class RegistroPropietarioFrame extends javax.swing.JFrame {
         }
 
         if (nombre.length() < 5
-                || nombre.length() > 100) {
+                || nombre.length() > 60) {
 
             JOptionPane.showMessageDialog(
                     this,
-                    "El nombre debe tener entre 5 y 100 caracteres."
+                    "El nombre debe tener entre 5 y 60 caracteres."
             );
 
             return;
@@ -351,7 +351,7 @@ public class RegistroPropietarioFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        // falta pa regresar al main
+    new InicioFrame(service).setVisible(true);
         dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 

@@ -256,8 +256,8 @@ public class RegistroPagoFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_txtMontoActionPerformed
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
+        new InicioFrame(service).setVisible(true);
         dispose();
-
     }//GEN-LAST:event_btnVolverActionPerformed
 
     /**

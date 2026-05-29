@@ -1,37 +1,33 @@
-
 package com.umg.vistaverde.ui;
+
 import com.umg.vistaverde.model.Condominio;
 import com.umg.vistaverde.service.CondominioService;
 import com.umg.vistaverde.model.Casa;
 import com.umg.vistaverde.model.Pago;
 
-
-
 public class EstadoCuentaFrame extends javax.swing.JFrame {
 
-private CondominioService service;
-   
-
+    private CondominioService service;
 
     public EstadoCuentaFrame(CondominioService service) {
-        
-    initComponents();
-    this.setLocationRelativeTo(null);
-        
-    this.service = service;
 
-    cargarCasas();
-        
+        initComponents();
+        this.setLocationRelativeTo(null);
+
+        this.service = service;
+
+        cargarCasas();
+
     }
 
-   private void cargarCasas (){
-       
-       for (int i=1; i <= 30; i++){
-           
-           cmbCasa.addItem(String.valueOf(i));
-       }
-   }
-    
+    private void cargarCasas() {
+
+        for (int i = 1; i <= 30; i++) {
+
+            cmbCasa.addItem(String.valueOf(i));
+        }
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -155,10 +151,10 @@ private CondominioService service;
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
+
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
-      
-        String [] nombresMeses = {
+
+        String[] nombresMeses = {
             "Enero",
             "Febrero",
             "Marzo",
@@ -170,84 +166,81 @@ private CondominioService service;
             "Septiembre",
             "Octubre",
             "Noviembre",
-            "Diciembre"  
+            "Diciembre"
         };
-        
-        
-        
-      String casaSeleccionada = cmbCasa.getSelectedItem().toString();
-      int numeroCasa = Integer.parseInt(casaSeleccionada);
-      Casa casa = service.obtenerCasa(numeroCasa);
-      
-  if (casa.tienePropietario()) {
 
-    lblPropietario.setText(
-            "Propietario: " +
-            casa.getPropietario().getNombre()
-    );
+        String casaSeleccionada = cmbCasa.getSelectedItem().toString();
+        int numeroCasa = Integer.parseInt(casaSeleccionada);
+        Casa casa = service.obtenerCasa(numeroCasa);
 
-} else {
+        if (casa.tienePropietario()) {
 
-    lblPropietario.setText(
-            "Propietario: Sin propietario"
-       );
+            lblPropietario.setText(
+                    "Propietario: "
+                    + casa.getPropietario().getNombre()
+            );
 
-     }
-      
-   String mesesPagados = "No hay pagos registrados";
-   
-   if (!casa.getPagos().isEmpty()) {
+        } else {
 
-    mesesPagados = "";
+            lblPropietario.setText(
+                    "Propietario: Sin propietario"
+            );
 
-    for (Pago pago : casa.getPagos()) {
+        }
 
-        mesesPagados +=
-                nombresMeses[pago.getMes( )-1]+"\n";
+        String mesesPagados = "No hay pagos registrados";
 
-    }
+        if (!casa.getPagos().isEmpty()) {
 
-}
-  txtPagados.setText(mesesPagados);
-  
-  lblTotalPagado.setText(
-        "Total pagado: Q" + casa.getTotalPagado()
-);
-  String mesesPendientes = "";
-          
-          for (int mes = 1; mes <=12; mes++){
-              boolean pagado = false;
-              
-              for (Pago pago : casa.getPagos()){
-                  if (pago.getMes()==mes){
-                      pagado = true;
-                  }
-              }
-              if (!pagado){
-                  mesesPendientes += nombresMeses[mes-1]+"\n";
-              }
-          }
-          txtPendientes.setText(mesesPendientes);
+            mesesPagados = "";
+
+            for (Pago pago : casa.getPagos()) {
+
+                mesesPagados
+                        += nombresMeses[pago.getMes() - 1] + "\n";
+
+            }
+
+        }
+        txtPagados.setText(mesesPagados);
+
+        lblTotalPagado.setText(
+                "Total pagado: Q" + casa.getTotalPagado()
+        );
+        String mesesPendientes = "";
+
+        for (int mes = 1; mes <= 12; mes++) {
+            boolean pagado = false;
+
+            for (Pago pago : casa.getPagos()) {
+                if (pago.getMes() == mes) {
+                    pagado = true;
+                }
+            }
+            if (!pagado) {
+                mesesPendientes += nombresMeses[mes - 1] + "\n";
+            }
+        }
+        txtPendientes.setText(mesesPendientes);
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
+        new InicioFrame(service).setVisible(true);
+
         dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 
-   
     public static void main(String args[]) {
 
-
- 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 //new EstadoCuentaFrame().setVisible(true);
-                
+
                 Condominio condominio = new Condominio();
-                
-                CondominioService service = 
-                        new CondominioService(condominio);
-                
+
+                CondominioService service
+                        = new CondominioService(condominio);
+
                 new EstadoCuentaFrame(service)
                         .setVisible(true);
             }
