@@ -1,5 +1,4 @@
 # 🏡 Sistema de Administración de Condominio Vista Verde
-
 Sistema de escritorio desarrollado en **Java con Java Swing** para la administración de cuotas de mantenimiento del Condominio Vista Verde. Proyecto final del curso de Programación I — Universidad Mariano Gálvez de Guatemala, 2026.
 
 **Facultad de Ingeniería en Sistemas de Información**
@@ -8,9 +7,7 @@ Curso: Programación I | Catedrático: César Alejandro Juárez López
 ---
 
 ## 📋 Descripción del Proyecto
-
 El Condominio Vista Verde cuenta con **30 casas** (numeradas del 1 al 30). Este sistema permite al administrador:
-
 - Registrar a los propietarios de cada casa
 - Registrar pagos mensuales de cuota de mantenimiento (Q1,500.00 por defecto)
 - Consultar el estado de cuenta por casa
@@ -23,7 +20,6 @@ El Condominio Vista Verde cuenta con **30 casas** (numeradas del 1 al 30). Este 
 ---
 
 ## 👥 Integrantes del Equipo
-
 | Nombre | Carné | Rol |
 |---|---|---|
 | Angel Alexander Zelada Donado | 0900-24-19888 | Líder del proyecto |
@@ -36,7 +32,6 @@ El Condominio Vista Verde cuenta con **30 casas** (numeradas del 1 al 30). Este 
 ---
 
 ## ⚙️ Requisitos para Ejecutar el Proyecto
-
 - **Java JDK 8** o superior instalado
 - **NetBeans IDE 12** o superior (se recomienda la versión con JDK incluido)
 - **Git** instalado
@@ -44,7 +39,6 @@ El Condominio Vista Verde cuenta con **30 casas** (numeradas del 1 al 30). Este 
 ---
 
 ## 🚀 Cómo Ejecutar
-
 ```bash
 git clone https://github.com/andresmoln/condominio-vista-verde.git
 ```
@@ -56,7 +50,6 @@ git clone https://github.com/andresmoln/condominio-vista-verde.git
 4. Clic derecho sobre el proyecto → **Run** (o F6)
 
 ### Credenciales de acceso
-
 | Campo | Valor |
 |---|---|
 | Usuario | `iusr_vistaverde` |
@@ -64,4 +57,41 @@ git clone https://github.com/andresmoln/condominio-vista-verde.git
 
 ---
 
+## 🖥️ Pantallas del Sistema
+1. **Login** — Autenticación del administrador
+2. **Inicio** — Menú principal con acceso a todos los módulos
+3. **Registro de Propietario** — Alta de propietarios por casa
+4. **Registro de Pago** — Registro de cuotas mensuales
+5. **Configuración de Cuota** — Modificar el monto de mantenimiento
+6. **Estado de Cuenta** — Consulta de pagos por casa
+7. **Reporte General** — Resumen de las 30 casas en JTable
+8. **Casas Morosas** — Lista de casas sin pago en el mes actual
+
+---
+
+## 💾 Persistencia de Datos
+El sistema guarda automáticamente todos los datos en un archivo `datos.txt` al cerrar sesión. Al iniciar el programa, los datos se cargan automáticamente. El archivo se genera en la carpeta raíz del proyecto.
+
+---
+
+## 📊 Gestión del Proyecto
+- **Tablero Jira:** https://andresmoln02.atlassian.net/jira/software/projects/CVV/boards/34
+- **Repositorio GitHub:** https://github.com/andresmoln/condominio-vista-verde
+
+---
+
 ## 🗂️ Estructura del Proyecto
+```
+condominio-vista-verde/
+├── src/main/java/com/umg/vistaverde/
+│   ├── model/          → Casa, Propietario, Pago, Condominio
+│   ├── service/        → CondominioService
+│   ├── ui/             → Todas las pantallas Swing
+│   └── CondominioVistaVerde.java
+├── docs/
+│   ├── diagramas/      → Diagrama de clases
+│   └── manual/         → Manual de usuario PDF
+├── pom.xml
+└── README.md
+```
+
