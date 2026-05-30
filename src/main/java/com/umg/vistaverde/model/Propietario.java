@@ -41,8 +41,4 @@ public class Propietario {
     public int getNumeroCasa() {
         return numeroCasa;
     }
-
-    public void setNumeroCasa(int numeroCasa) {
-        this.numeroCasa = numeroCasa;
-    }
 }

@@ -18,24 +18,12 @@ public class Pago {
         return mes;
     }
 
-    public void setMes(int mes) {
-        this.mes = mes;
-    }
-
     public int getAnio() {
         return anio;
     }
 
-    public void setAnio(int anio) {
-        this.anio = anio;
-    }
-
     public double getMonto() {
         return monto;
-    }
-
-    public void setMonto(double monto) {
-        this.monto = monto;
     }
 
     public String getEstado() {

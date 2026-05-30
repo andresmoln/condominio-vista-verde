@@ -9,13 +9,6 @@ import java.awt.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-/**
- * Pantalla de Casas Morosas
- * Sistema de Administración de Condominio Vista Verde
- * Universidad Mariano Gálvez de Guatemala — Programación I
- *
- * @author Alex Zelada
- */
 public class CasasMorosasFrame extends JFrame {
 
     private CondominioService service;
@@ -39,7 +32,6 @@ public class CasasMorosasFrame extends JFrame {
         panelRaiz.setBackground(new Color(245, 247, 250));
         setContentPane(panelRaiz);
 
-        // ── ENCABEZADO ────────────────────────────────────────────────────
         JPanel panelTop = new JPanel(new BorderLayout());
         panelTop.setBackground(new Color(183, 28, 28));
         panelTop.setBorder(new EmptyBorder(16, 30, 16, 30));
@@ -53,11 +45,11 @@ public class CasasMorosasFrame extends JFrame {
         lblTitulo.setForeground(Color.WHITE);
 
         int mesActual = LocalDate.now().getMonthValue();
-        String[] meses = {"Enero","Febrero","Marzo","Abril","Mayo","Junio",
-                          "Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"};
+        String[] meses = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+            "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
 
-        JLabel lblSub = new JLabel("Casas sin pago en " + meses[mesActual - 1] +
-                " " + LocalDate.now().getYear());
+        JLabel lblSub = new JLabel("Casas sin pago en " + meses[mesActual - 1]
+                + " " + LocalDate.now().getYear());
         lblSub.setFont(new Font("SansSerif", Font.PLAIN, 12));
         lblSub.setForeground(new Color(255, 205, 205));
 
@@ -68,7 +60,6 @@ public class CasasMorosasFrame extends JFrame {
         panelTop.add(panelTitulos, BorderLayout.WEST);
         panelRaiz.add(panelTop, BorderLayout.NORTH);
 
-        // ── TABLA ─────────────────────────────────────────────────────────
         String[] columnas = {"# Casa", "Propietario", "Teléfono"};
 
         modeloTabla = new DefaultTableModel(columnas, 0) {
@@ -88,14 +79,12 @@ public class CasasMorosasFrame extends JFrame {
         tabla.setGridColor(new Color(220, 220, 220));
         tabla.setShowGrid(true);
 
-        // Centrar columnas
-        javax.swing.table.DefaultTableCellRenderer centrado =
-            new javax.swing.table.DefaultTableCellRenderer();
+        javax.swing.table.DefaultTableCellRenderer centrado
+                = new javax.swing.table.DefaultTableCellRenderer();
         centrado.setHorizontalAlignment(SwingConstants.CENTER);
         tabla.getColumnModel().getColumn(0).setCellRenderer(centrado);
         tabla.getColumnModel().getColumn(2).setCellRenderer(centrado);
 
-        // Anchos
         tabla.getColumnModel().getColumn(0).setPreferredWidth(70);
         tabla.getColumnModel().getColumn(1).setPreferredWidth(250);
         tabla.getColumnModel().getColumn(2).setPreferredWidth(150);
@@ -104,7 +93,6 @@ public class CasasMorosasFrame extends JFrame {
         scroll.setBorder(new EmptyBorder(10, 20, 10, 20));
         panelRaiz.add(scroll, BorderLayout.CENTER);
 
-        // ── PIE ───────────────────────────────────────────────────────────
         JPanel panelPie = new JPanel(new BorderLayout());
         panelPie.setBackground(new Color(238, 238, 238));
         panelPie.setBorder(new EmptyBorder(12, 20, 12, 20));
@@ -141,16 +129,10 @@ public class CasasMorosasFrame extends JFrame {
         ArrayList<Casa> morosas = service.listarCasasMorosas(mesActual, anioActual);
 
         for (Casa casa : morosas) {
-            String propietario = casa.tienePropietario()
-                    ? casa.getPropietario().getNombre()
-                    : "Sin propietario";
-
-            String telefono = casa.tienePropietario()
-                    ? casa.getPropietario().getTelefono()
-                    : "N/A";
-
             modeloTabla.addRow(new Object[]{
-                casa.getNumeroCasa(), propietario, telefono
+                casa.getNumeroCasa(),
+                casa.getPropietario().getNombre(),
+                casa.getPropietario().getTelefono()
             });
         }
 

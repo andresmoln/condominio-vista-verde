@@ -1,29 +1,22 @@
 package com.umg.vistaverde.ui;
 
-import com.umg.vistaverde.model.Condominio;
 import com.umg.vistaverde.service.CondominioService;
 import com.umg.vistaverde.model.Casa;
-import com.umg.vistaverde.model.Pago;
+import java.time.LocalDate;
 
 public class EstadoCuentaFrame extends javax.swing.JFrame {
 
     private CondominioService service;
 
     public EstadoCuentaFrame(CondominioService service) {
-
         initComponents();
         this.setLocationRelativeTo(null);
-
         this.service = service;
-
         cargarCasas();
-
     }
 
     private void cargarCasas() {
-
         for (int i = 1; i <= 30; i++) {
-
             cmbCasa.addItem(String.valueOf(i));
         }
     }
@@ -151,101 +144,53 @@ public class EstadoCuentaFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
-
         String[] nombresMeses = {
-            "Enero",
-            "Febrero",
-            "Marzo",
-            "Abril",
-            "Mayo",
-            "Junio",
-            "Julio",
-            "Agosto",
-            "Septiembre",
-            "Octubre",
-            "Noviembre",
-            "Diciembre"
+            "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+            "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
         };
 
-        String casaSeleccionada = cmbCasa.getSelectedItem().toString();
-        int numeroCasa = Integer.parseInt(casaSeleccionada);
+        int numeroCasa = Integer.parseInt(cmbCasa.getSelectedItem().toString());
         Casa casa = service.obtenerCasa(numeroCasa);
+        int anioActual = LocalDate.now().getYear();
 
         if (casa.tienePropietario()) {
-
             lblPropietario.setText(
                     "Propietario: "
                     + casa.getPropietario().getNombre()
             );
-
         } else {
-
             lblPropietario.setText(
                     "Propietario: Sin propietario"
             );
-
         }
 
         String mesesPagados = "No hay pagos registrados";
-
         if (!casa.getPagos().isEmpty()) {
-
             mesesPagados = "";
-
-            for (Pago pago : casa.getPagos()) {
-
-                mesesPagados
-                        += nombresMeses[pago.getMes() - 1] + "\n";
-
+            for (int mes = 1; mes <= 12; mes++) {
+                if (casa.yaPago(mes, anioActual)) {
+                    mesesPagados += nombresMeses[mes - 1] + "\n";
+                }
             }
-
         }
         txtPagados.setText(mesesPagados);
 
-        lblTotalPagado.setText(
-                "Total pagado: Q" + casa.getTotalPagado()
-        );
         String mesesPendientes = "";
-
         for (int mes = 1; mes <= 12; mes++) {
-            boolean pagado = false;
-
-            for (Pago pago : casa.getPagos()) {
-                if (pago.getMes() == mes) {
-                    pagado = true;
-                }
-            }
-            if (!pagado) {
+            if (!casa.yaPago(mes, anioActual)) {
                 mesesPendientes += nombresMeses[mes - 1] + "\n";
             }
         }
         txtPendientes.setText(mesesPendientes);
+
+        lblTotalPagado.setText(String.format("Total pagado: Q%.2f", casa.getTotalPagado()));
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
         new InicioFrame(service).setVisible(true);
-
         dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
-
-    public static void main(String args[]) {
-
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                //new EstadoCuentaFrame().setVisible(true);
-
-                Condominio condominio = new Condominio();
-
-                CondominioService service
-                        = new CondominioService(condominio);
-
-                new EstadoCuentaFrame(service)
-                        .setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConsultar;

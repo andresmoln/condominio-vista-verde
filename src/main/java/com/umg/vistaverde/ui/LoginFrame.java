@@ -7,35 +7,22 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-/**
- * Pantalla de Login Sistema de Administración de Condominio Vista Verde
- * Universidad Mariano Gálvez de Guatemala — Programación I
- *
- * @author Jose Trejo
- */
 public class LoginFrame extends JFrame {
 
-    // ── Credenciales válidas ──────────────────────────────────────────────────
     private static final String USUARIO_VALIDO = "iusr_vistaverde";
     private static final String PASSWORD_VALIDA = "R3sidencial2026%";
 
-    // ── Servicio compartido ───────────────────────────────────────────────────
     private CondominioService service;
 
-    // ── Componentes ───────────────────────────────────────────────────────────
     private JTextField txtUsuario;
     private JPasswordField txtPassword;
     private JLabel lblMensaje;
 
-    // ─────────────────────────────────────────────────────────────────────────
-    // Constructor — recibe el CondominioService compartido
-    // ─────────────────────────────────────────────────────────────────────────
     public LoginFrame(CondominioService service) {
         this.service = service;
         initComponents();
         setLocationRelativeTo(null);
 
-        // Guardar al cerrar con la X
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent e) {
@@ -44,13 +31,6 @@ public class LoginFrame extends JFrame {
         });
     }
 
-    public LoginFrame() {
-
-    }
-
-    // ─────────────────────────────────────────────────────────────────────────
-    // Interfaz gráfica
-    // ─────────────────────────────────────────────────────────────────────────
     private void initComponents() {
         setTitle("Vista Verde — Iniciar Sesión");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -60,7 +40,6 @@ public class LoginFrame extends JFrame {
         panelRaiz.setBackground(new Color(245, 247, 250));
         setContentPane(panelRaiz);
 
-        // ── Encabezado ────────────────────────────────────────────────────
         JPanel panelTop = new JPanel();
         panelTop.setLayout(new BoxLayout(panelTop, BoxLayout.Y_AXIS));
         panelTop.setBackground(new Color(27, 94, 32));
@@ -81,7 +60,6 @@ public class LoginFrame extends JFrame {
         panelTop.add(lblSub);
         panelRaiz.add(panelTop, BorderLayout.NORTH);
 
-        // ── Formulario ────────────────────────────────────────────────────
         JPanel panelForm = new JPanel(new GridBagLayout());
         panelForm.setBackground(new Color(245, 247, 250));
         panelForm.setBorder(new EmptyBorder(32, 50, 24, 50));
@@ -103,7 +81,6 @@ public class LoginFrame extends JFrame {
         gbc.gridwidth = 1;
         gbc.insets = new Insets(6, 8, 6, 8);
 
-        // Usuario
         JLabel lblUsuario = new JLabel("Usuario:");
         lblUsuario.setFont(new Font("SansSerif", Font.PLAIN, 13));
         gbc.gridx = 0;
@@ -119,7 +96,6 @@ public class LoginFrame extends JFrame {
         gbc.gridy = 1;
         panelForm.add(txtUsuario, gbc);
 
-        // Contraseña
         JLabel lblPass = new JLabel("Contraseña:");
         lblPass.setFont(new Font("SansSerif", Font.PLAIN, 13));
         gbc.gridx = 0;
@@ -135,7 +111,6 @@ public class LoginFrame extends JFrame {
         gbc.gridy = 2;
         panelForm.add(txtPassword, gbc);
 
-        // Mensaje error
         lblMensaje = new JLabel(" ");
         lblMensaje.setFont(new Font("SansSerif", Font.ITALIC, 12));
         lblMensaje.setForeground(new Color(198, 40, 40));
@@ -146,7 +121,6 @@ public class LoginFrame extends JFrame {
         gbc.insets = new Insets(4, 8, 4, 8);
         panelForm.add(lblMensaje, gbc);
 
-        // Botones
         JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 14, 0));
         panelBotones.setOpaque(false);
 
@@ -177,7 +151,6 @@ public class LoginFrame extends JFrame {
 
         panelRaiz.add(panelForm, BorderLayout.CENTER);
 
-        // ── Pie ───────────────────────────────────────────────────────────
         JLabel lblPie = new JLabel("© 2026 Universidad Mariano Gálvez de Guatemala");
         lblPie.setFont(new Font("SansSerif", Font.PLAIN, 10));
         lblPie.setForeground(new Color(150, 150, 150));
@@ -185,7 +158,6 @@ public class LoginFrame extends JFrame {
         lblPie.setBorder(new EmptyBorder(6, 10, 10, 10));
         panelRaiz.add(lblPie, BorderLayout.SOUTH);
 
-        // ── Eventos ───────────────────────────────────────────────────────
         btnIngresar.addActionListener(e -> validarCredenciales());
         btnLimpiar.addActionListener(e -> limpiarCampos());
 
@@ -210,9 +182,6 @@ public class LoginFrame extends JFrame {
         pack();
     }
 
-    // ─────────────────────────────────────────────────────────────────────────
-    // Lógica de validación
-    // ─────────────────────────────────────────────────────────────────────────
     private void validarCredenciales() {
         String usuario = txtUsuario.getText().trim();
         String password = new String(txtPassword.getPassword());

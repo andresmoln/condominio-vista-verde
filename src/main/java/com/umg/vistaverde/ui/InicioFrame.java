@@ -8,29 +8,16 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
-/**
- * Pantalla de Inicio / Menú Principal Sistema de Administración de Condominio
- * Vista Verde Universidad Mariano Gálvez de Guatemala — Programación I
- *
- * @author Jose Trejo
- */
 public class InicioFrame extends JFrame {
 
-    // ── Servicio compartido ───────────────────────────────────────────────────
     private CondominioService service;
 
-    // ─────────────────────────────────────────────────────────────────────────
-    // Constructor — recibe el CondominioService compartido
-    // ─────────────────────────────────────────────────────────────────────────
     public InicioFrame(CondominioService service) {
         this.service = service;
         initComponents();
         setLocationRelativeTo(null);
     }
 
-    // ─────────────────────────────────────────────────────────────────────────
-    // Interfaz gráfica
-    // ─────────────────────────────────────────────────────────────────────────
     private void initComponents() {
         setTitle("Vista Verde — Menú Principal");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -40,12 +27,10 @@ public class InicioFrame extends JFrame {
         panelRaiz.setBackground(new Color(245, 247, 250));
         setContentPane(panelRaiz);
 
-        // ── ENCABEZADO ────────────────────────────────────────────────────
         JPanel panelTop = new JPanel(new BorderLayout());
         panelTop.setBackground(new Color(27, 94, 32));
         panelTop.setBorder(new EmptyBorder(20, 30, 20, 30));
 
-        // Izquierda: nombre del condominio
         JPanel panelIzq = new JPanel();
         panelIzq.setLayout(new BoxLayout(panelIzq, BoxLayout.Y_AXIS));
         panelIzq.setOpaque(false);
@@ -62,7 +47,6 @@ public class InicioFrame extends JFrame {
         panelIzq.add(Box.createVerticalStrut(3));
         panelIzq.add(lblSistema);
 
-        // Derecha: mes/año y bienvenida
         JPanel panelDer = new JPanel();
         panelDer.setLayout(new BoxLayout(panelDer, BoxLayout.Y_AXIS));
         panelDer.setOpaque(false);
@@ -89,7 +73,6 @@ public class InicioFrame extends JFrame {
         panelTop.add(panelDer, BorderLayout.EAST);
         panelRaiz.add(panelTop, BorderLayout.NORTH);
 
-        // ── GRID DE MÓDULOS ───────────────────────────────────────────────
         JPanel panelCentral = new JPanel(new BorderLayout());
         panelCentral.setBackground(new Color(245, 247, 250));
         panelCentral.setBorder(new EmptyBorder(28, 40, 24, 40));
@@ -103,8 +86,6 @@ public class InicioFrame extends JFrame {
         JPanel panelGrid = new JPanel(new GridLayout(2, 3, 14, 14));
         panelGrid.setOpaque(false);
 
-        // Definición de módulos: { texto del botón, color, clase destino }
-        // Los nombres de clase deben coincidir exactamente con los de tus compañeros
         panelGrid.add(crearBoton("Registro de\nPropietario", new Color(21, 101, 192), () -> {
             new RegistroPropietarioFrame(service).setVisible(true);
             dispose();
@@ -133,7 +114,6 @@ public class InicioFrame extends JFrame {
         panelCentral.add(panelGrid, BorderLayout.CENTER);
         panelRaiz.add(panelCentral, BorderLayout.CENTER);
 
-        // ── PIE DE PÁGINA ─────────────────────────────────────────────────
         JPanel panelPie = new JPanel(new BorderLayout());
         panelPie.setBackground(new Color(238, 238, 238));
         panelPie.setBorder(new EmptyBorder(8, 20, 8, 20));
@@ -157,9 +137,6 @@ public class InicioFrame extends JFrame {
         pack();
     }
 
-    // ─────────────────────────────────────────────────────────────────────────
-    // Fábrica de botones estilo tarjeta
-    // ─────────────────────────────────────────────────────────────────────────
     private JButton crearBoton(String texto, Color colorAcento, Runnable accion) {
         String html = "<html><center>" + texto.replace("\n", "<br>") + "</center></html>";
 
@@ -200,9 +177,6 @@ public class InicioFrame extends JFrame {
         return btn;
     }
 
-    // ─────────────────────────────────────────────────────────────────────────
-    // Cerrar sesión
-    // ─────────────────────────────────────────────────────────────────────────
     private void cerrarSesion() {
         int op = JOptionPane.showConfirmDialog(this,
                 "¿Desea cerrar la sesión?", "Cerrar Sesión",

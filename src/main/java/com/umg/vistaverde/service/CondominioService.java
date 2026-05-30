@@ -4,6 +4,12 @@ import com.umg.vistaverde.model.Casa;
 import com.umg.vistaverde.model.Condominio;
 import com.umg.vistaverde.model.Pago;
 import com.umg.vistaverde.model.Propietario;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class CondominioService {
@@ -100,9 +106,7 @@ public class CondominioService {
 
     public void guardarDatos() {
         try {
-            java.io.BufferedWriter writer = new java.io.BufferedWriter(
-                    new java.io.FileWriter("datos.txt")
-            );
+            BufferedWriter writer = new BufferedWriter(new FileWriter("datos.txt"));
             for (Casa casa : condominio.getCasas()) {
                 writer.write("CASA:" + casa.getNumeroCasa());
                 writer.newLine();
@@ -127,21 +131,19 @@ public class CondominioService {
             writer.write("CUOTA:" + condominio.getCuotaMensual());
             writer.newLine();
             writer.close();
-        } catch (java.io.IOException e) {
+        } catch (IOException e) {
             System.out.println("Error al guardar: " + e.getMessage());
         }
     }
 
     public void cargarDatos() {
-        java.io.File archivo = new java.io.File("datos.txt");
+        File archivo = new File("datos.txt");
         if (!archivo.exists()) {
             return;
         }
 
         try {
-            java.io.BufferedReader reader = new java.io.BufferedReader(
-                    new java.io.FileReader(archivo)
-            );
+            BufferedReader reader = new BufferedReader(new FileReader(archivo));
             String linea;
             Casa casaActual = null;
 
@@ -171,7 +173,7 @@ public class CondominioService {
                 }
             }
             reader.close();
-        } catch (java.io.IOException e) {
+        } catch (IOException e) {
             System.out.println("Error al cargar: " + e.getMessage());
         }
     }
