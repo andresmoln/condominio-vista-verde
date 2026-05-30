@@ -1,6 +1,5 @@
 package com.umg.vistaverde.ui;
 
-import com.umg.vistaverde.model.Condominio;
 import com.umg.vistaverde.service.CondominioService;
 import javax.swing.JOptionPane;
 
@@ -9,16 +8,12 @@ public class ConfiguracionCuotaFrame extends javax.swing.JFrame {
     private CondominioService service;
 
     public ConfiguracionCuotaFrame(CondominioService service) {
-
         this.service = service;
-
         initComponents();
         this.setLocationRelativeTo(null);
         lblCuotaActual.setText(
-                "Cuota actual: Q"
-                + service.obtenerCuotaActual()
+                String.format("Cuota actual: Q%.2f", service.obtenerCuotaActual())
         );
-
     }
 
     @SuppressWarnings("unchecked")
@@ -34,7 +29,7 @@ public class ConfiguracionCuotaFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 153));
-        setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(51, 102, 255));
@@ -45,12 +40,6 @@ public class ConfiguracionCuotaFrame extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel3.setText("Nueva Cuota");
-
-        txtNuevaCuota.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNuevaCuotaActionPerformed(evt);
-            }
-        });
 
         btnActualizarCuota.setBackground(new java.awt.Color(0, 153, 102));
         btnActualizarCuota.setForeground(new java.awt.Color(255, 255, 255));
@@ -78,18 +67,15 @@ public class ConfiguracionCuotaFrame extends javax.swing.JFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(61, 61, 61))
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblCuotaActual)
-                        .addContainerGap(232, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtNuevaCuota, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(148, Short.MAX_VALUE))))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(20, 20, 20)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblCuotaActual)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtNuevaCuota, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(btnVolver))
@@ -120,30 +106,24 @@ public class ConfiguracionCuotaFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnActualizarCuotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarCuotaActionPerformed
-
         String textoCuota = txtNuevaCuota.getText();
 
         if (!textoCuota.matches("^\\d+(\\.\\d{1,2})?$")) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Ingrese una cantidad válida con máximo 2 decimales"
+            );
+            return;
+        }
 
-    JOptionPane.showMessageDialog(
-            this,
-            "Ingrese una cantidad válida con máximo 2 decimales"
-    );
-
-    return;
-}
-        
         try {
-
             double nuevaCuota = Double.parseDouble(textoCuota);
 
             if (nuevaCuota < 100 || nuevaCuota > 100000) {
-
                 JOptionPane.showMessageDialog(
                         this,
                         "La cuota debe estar entre Q100 y Q100000"
                 );
-
                 return;
             }
 
@@ -151,66 +131,21 @@ public class ConfiguracionCuotaFrame extends javax.swing.JFrame {
 
             if (confirmacion == JOptionPane.YES_OPTION) {
                 service.actualizarCuota(nuevaCuota);
-                lblCuotaActual.setText("Cuota actual: Q" + service.obtenerCuotaActual());
-
+                lblCuotaActual.setText(
+                        String.format("Cuota actual: Q%.2f", service.obtenerCuotaActual())
+                );
                 JOptionPane.showMessageDialog(this,
                         "Cuota actualizada correctamente");
             }
         } catch (NumberFormatException e) {
-
             JOptionPane.showMessageDialog(this, "Ingrese un número válido");
         }
-
     }//GEN-LAST:event_btnActualizarCuotaActionPerformed
-
-    private void txtNuevaCuotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNuevaCuotaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNuevaCuotaActionPerformed
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
         new InicioFrame(service).setVisible(true);
         dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ConfiguracionCuotaFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ConfiguracionCuotaFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ConfiguracionCuotaFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ConfiguracionCuotaFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                com.umg.vistaverde.model.Condominio condominio = new com.umg.vistaverde.model.Condominio();
-                com.umg.vistaverde.service.CondominioService service = new com.umg.vistaverde.service.CondominioService(condominio);
-                new ConfiguracionCuotaFrame(service).setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizarCuota;

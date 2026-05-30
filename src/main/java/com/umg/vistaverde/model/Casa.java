@@ -18,10 +18,6 @@ public class Casa {
         return numeroCasa;
     }
 
-    public void setNumeroCasa(int numeroCasa) {
-        this.numeroCasa = numeroCasa;
-    }
-
     public Propietario getPropietario() {
         return propietario;
     }
@@ -32,10 +28,6 @@ public class Casa {
 
     public ArrayList<Pago> getPagos() {
         return pagos;
-    }
-
-    public void setPagos(ArrayList<Pago> pagos) {
-        this.pagos = pagos;
     }
 
     public boolean tienePropietario() {

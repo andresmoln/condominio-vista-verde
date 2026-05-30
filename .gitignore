@@ -23,3 +23,6 @@ nbdist/
 # Sistema operativo
 .DS_Store
 Thumbs.db
+
+# Datos de persistencia local
+datos.txt

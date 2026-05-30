@@ -9,13 +9,6 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.time.LocalDate;
 
-/**
- * Pantalla de Reporte General
- * Sistema de Administración de Condominio Vista Verde
- * Universidad Mariano Gálvez de Guatemala — Programación I
- *
- * @author Alex Zelada
- */
 public class ReporteGeneralFrame extends JFrame {
 
     private CondominioService service;
@@ -40,7 +33,6 @@ public class ReporteGeneralFrame extends JFrame {
         panelRaiz.setBackground(new Color(245, 247, 250));
         setContentPane(panelRaiz);
 
-        // ── ENCABEZADO ────────────────────────────────────────────────────
         JPanel panelTop = new JPanel(new BorderLayout());
         panelTop.setBackground(new Color(136, 14, 79));
         panelTop.setBorder(new EmptyBorder(16, 30, 16, 30));
@@ -63,7 +55,6 @@ public class ReporteGeneralFrame extends JFrame {
         panelTop.add(panelTitulos, BorderLayout.WEST);
         panelRaiz.add(panelTop, BorderLayout.NORTH);
 
-        // ── TABLA ─────────────────────────────────────────────────────────
         String[] columnas = {
             "# Casa", "Propietario", "Estado Mes Actual", "Total Pagado en el Año"
         };
@@ -85,15 +76,13 @@ public class ReporteGeneralFrame extends JFrame {
         tabla.setGridColor(new Color(220, 220, 220));
         tabla.setShowGrid(true);
 
-        // Centrar columnas
-        javax.swing.table.DefaultTableCellRenderer centrado =
-            new javax.swing.table.DefaultTableCellRenderer();
+        javax.swing.table.DefaultTableCellRenderer centrado
+                = new javax.swing.table.DefaultTableCellRenderer();
         centrado.setHorizontalAlignment(SwingConstants.CENTER);
         tabla.getColumnModel().getColumn(0).setCellRenderer(centrado);
         tabla.getColumnModel().getColumn(2).setCellRenderer(centrado);
         tabla.getColumnModel().getColumn(3).setCellRenderer(centrado);
 
-        // Anchos de columna
         tabla.getColumnModel().getColumn(0).setPreferredWidth(60);
         tabla.getColumnModel().getColumn(1).setPreferredWidth(200);
         tabla.getColumnModel().getColumn(2).setPreferredWidth(150);
@@ -103,7 +92,6 @@ public class ReporteGeneralFrame extends JFrame {
         scroll.setBorder(new EmptyBorder(10, 20, 10, 20));
         panelRaiz.add(scroll, BorderLayout.CENTER);
 
-        // ── PIE CON TOTALES ───────────────────────────────────────────────
         JPanel panelPie = new JPanel(new BorderLayout());
         panelPie.setBackground(new Color(238, 238, 238));
         panelPie.setBorder(new EmptyBorder(12, 20, 12, 20));
@@ -147,8 +135,6 @@ public class ReporteGeneralFrame extends JFrame {
         int mesActual = LocalDate.now().getMonthValue();
         int anioActual = LocalDate.now().getYear();
 
-        double totalRecaudadoMes = 0;
-
         for (int i = 1; i <= 30; i++) {
             Casa casa = service.obtenerCasa(i);
 
@@ -156,36 +142,26 @@ public class ReporteGeneralFrame extends JFrame {
                     ? casa.getPropietario().getNombre()
                     : "Sin propietario";
 
-            // Estado del mes actual
-            boolean pagadoEsteMes = false;
-            double totalAnio = 0;
+            boolean pagadoEsteMes = casa.yaPago(mesActual, anioActual);
 
+            double totalAnio = 0;
             for (Pago pago : casa.getPagos()) {
-                if (pago.getMes() == mesActual && pago.getAnio() == anioActual) {
-                    pagadoEsteMes = true;
-                }
                 if (pago.getAnio() == anioActual) {
                     totalAnio += pago.getMonto();
                 }
             }
 
-            if (pagadoEsteMes) {
-                totalRecaudadoMes += service.obtenerCuotaActual();
-            }
-
             String estado = pagadoEsteMes ? "✓ Pagado" : "✗ Pendiente";
-            String totalStr = "Q" + String.format("%.2f", totalAnio);
 
             modeloTabla.addRow(new Object[]{
-                i, propietario, estado, totalStr
+                i, propietario, estado, String.format("Q%.2f", totalAnio)
             });
         }
 
-        double totalEsperado = 30 * service.obtenerCuotaActual();
+        double totalRecaudadoMes = service.calcularTotalRecaudado(mesActual, anioActual);
+        double totalEsperado = service.calcularTotalEsperado();
 
-        lblTotalRecaudado.setText("Total recaudado este mes: Q" +
-                String.format("%.2f", totalRecaudadoMes));
-        lblTotalEsperado.setText("Total esperado: Q" +
-                String.format("%.2f", totalEsperado));
+        lblTotalRecaudado.setText(String.format("Total recaudado este mes: Q%.2f", totalRecaudadoMes));
+        lblTotalEsperado.setText(String.format("Total esperado: Q%.2f", totalEsperado));
     }
 }

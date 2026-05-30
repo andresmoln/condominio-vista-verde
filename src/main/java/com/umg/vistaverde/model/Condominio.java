@@ -19,10 +19,6 @@ public class Condominio {
         return casas;
     }
 
-    public void setCasas(ArrayList<Casa> casas) {
-        this.casas = casas;
-    }
-
     public double getCuotaMensual() {
         return cuotaMensual;
     }

@@ -7,42 +7,30 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-/**
- * Pantalla de Login
- * Sistema de Administración de Condominio Vista Verde
- * Universidad Mariano Gálvez de Guatemala — Programación I
- *
- * @author Jose Trejo
- */
 public class LoginFrame extends JFrame {
 
-    // ── Credenciales válidas ──────────────────────────────────────────────────
-    private static final String USUARIO_VALIDO  = "iusr_vistaverde";
+    private static final String USUARIO_VALIDO = "iusr_vistaverde";
     private static final String PASSWORD_VALIDA = "R3sidencial2026%";
 
-    // ── Servicio compartido ───────────────────────────────────────────────────
     private CondominioService service;
 
-    // ── Componentes ───────────────────────────────────────────────────────────
-    private JTextField     txtUsuario;
+    private JTextField txtUsuario;
     private JPasswordField txtPassword;
-    private JLabel         lblMensaje;
+    private JLabel lblMensaje;
 
-    // ─────────────────────────────────────────────────────────────────────────
-    // Constructor — recibe el CondominioService compartido
-    // ─────────────────────────────────────────────────────────────────────────
     public LoginFrame(CondominioService service) {
         this.service = service;
         initComponents();
         setLocationRelativeTo(null);
-    }
-    public LoginFrame() {
-        
 
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                service.guardarDatos();
+            }
+        });
     }
-    // ─────────────────────────────────────────────────────────────────────────
-    // Interfaz gráfica
-    // ─────────────────────────────────────────────────────────────────────────
+
     private void initComponents() {
         setTitle("Vista Verde — Iniciar Sesión");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -52,7 +40,6 @@ public class LoginFrame extends JFrame {
         panelRaiz.setBackground(new Color(245, 247, 250));
         setContentPane(panelRaiz);
 
-        // ── Encabezado ────────────────────────────────────────────────────
         JPanel panelTop = new JPanel();
         panelTop.setLayout(new BoxLayout(panelTop, BoxLayout.Y_AXIS));
         panelTop.setBackground(new Color(27, 94, 32));
@@ -73,30 +60,31 @@ public class LoginFrame extends JFrame {
         panelTop.add(lblSub);
         panelRaiz.add(panelTop, BorderLayout.NORTH);
 
-        // ── Formulario ────────────────────────────────────────────────────
         JPanel panelForm = new JPanel(new GridBagLayout());
         panelForm.setBackground(new Color(245, 247, 250));
         panelForm.setBorder(new EmptyBorder(32, 50, 24, 50));
 
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill   = GridBagConstraints.HORIZONTAL;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(6, 8, 6, 8);
 
         JLabel lblAcceso = new JLabel("Acceso al Sistema");
         lblAcceso.setFont(new Font("SansSerif", Font.BOLD, 15));
         lblAcceso.setForeground(new Color(27, 94, 32));
-        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 2;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
         gbc.insets = new Insets(0, 8, 18, 8);
         panelForm.add(lblAcceso, gbc);
 
         gbc.gridwidth = 1;
         gbc.insets = new Insets(6, 8, 6, 8);
 
-        // Usuario
         JLabel lblUsuario = new JLabel("Usuario:");
         lblUsuario.setFont(new Font("SansSerif", Font.PLAIN, 13));
-        gbc.gridx = 0; gbc.gridy = 1;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
         panelForm.add(lblUsuario, gbc);
 
         txtUsuario = new JTextField(20);
@@ -104,13 +92,14 @@ public class LoginFrame extends JFrame {
         txtUsuario.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(189, 189, 189)),
                 new EmptyBorder(6, 8, 6, 8)));
-        gbc.gridx = 1; gbc.gridy = 1;
+        gbc.gridx = 1;
+        gbc.gridy = 1;
         panelForm.add(txtUsuario, gbc);
 
-        // Contraseña
         JLabel lblPass = new JLabel("Contraseña:");
         lblPass.setFont(new Font("SansSerif", Font.PLAIN, 13));
-        gbc.gridx = 0; gbc.gridy = 2;
+        gbc.gridx = 0;
+        gbc.gridy = 2;
         panelForm.add(lblPass, gbc);
 
         txtPassword = new JPasswordField(20);
@@ -118,19 +107,20 @@ public class LoginFrame extends JFrame {
         txtPassword.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(189, 189, 189)),
                 new EmptyBorder(6, 8, 6, 8)));
-        gbc.gridx = 1; gbc.gridy = 2;
+        gbc.gridx = 1;
+        gbc.gridy = 2;
         panelForm.add(txtPassword, gbc);
 
-        // Mensaje error
         lblMensaje = new JLabel(" ");
         lblMensaje.setFont(new Font("SansSerif", Font.ITALIC, 12));
         lblMensaje.setForeground(new Color(198, 40, 40));
         lblMensaje.setHorizontalAlignment(SwingConstants.CENTER);
-        gbc.gridx = 0; gbc.gridy = 3; gbc.gridwidth = 2;
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 2;
         gbc.insets = new Insets(4, 8, 4, 8);
         panelForm.add(lblMensaje, gbc);
 
-        // Botones
         JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 14, 0));
         panelBotones.setOpaque(false);
 
@@ -153,13 +143,14 @@ public class LoginFrame extends JFrame {
         panelBotones.add(btnIngresar);
         panelBotones.add(btnLimpiar);
 
-        gbc.gridx = 0; gbc.gridy = 4; gbc.gridwidth = 2;
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.gridwidth = 2;
         gbc.insets = new Insets(12, 8, 8, 8);
         panelForm.add(panelBotones, gbc);
 
         panelRaiz.add(panelForm, BorderLayout.CENTER);
 
-        // ── Pie ───────────────────────────────────────────────────────────
         JLabel lblPie = new JLabel("© 2026 Universidad Mariano Gálvez de Guatemala");
         lblPie.setFont(new Font("SansSerif", Font.PLAIN, 10));
         lblPie.setForeground(new Color(150, 150, 150));
@@ -167,30 +158,32 @@ public class LoginFrame extends JFrame {
         lblPie.setBorder(new EmptyBorder(6, 10, 10, 10));
         panelRaiz.add(lblPie, BorderLayout.SOUTH);
 
-        // ── Eventos ───────────────────────────────────────────────────────
         btnIngresar.addActionListener(e -> validarCredenciales());
         btnLimpiar.addActionListener(e -> limpiarCampos());
 
         txtUsuario.addKeyListener(new KeyAdapter() {
-            @Override public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) txtPassword.requestFocus();
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    txtPassword.requestFocus();
+                }
             }
         });
 
         txtPassword.addKeyListener(new KeyAdapter() {
-            @Override public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) validarCredenciales();
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    validarCredenciales();
+                }
             }
         });
 
         pack();
     }
 
-    // ─────────────────────────────────────────────────────────────────────────
-    // Lógica de validación
-    // ─────────────────────────────────────────────────────────────────────────
     private void validarCredenciales() {
-        String usuario  = txtUsuario.getText().trim();
+        String usuario = txtUsuario.getText().trim();
         String password = new String(txtPassword.getPassword());
 
         if (usuario.isEmpty() || password.isEmpty()) {

@@ -4,6 +4,12 @@ import com.umg.vistaverde.model.Casa;
 import com.umg.vistaverde.model.Condominio;
 import com.umg.vistaverde.model.Pago;
 import com.umg.vistaverde.model.Propietario;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class CondominioService {
@@ -89,13 +95,86 @@ public class CondominioService {
         }
         return morosas;
     }
-    
-    public double obtenerCuotaActual(){
+
+    public double obtenerCuotaActual() {
         return condominio.getCuotaMensual();
     }
-    
-    public void actualizarCuota(double nuevaCuota){
+
+    public void actualizarCuota(double nuevaCuota) {
         condominio.setCuotaMensual(nuevaCuota);
     }
-    
+
+    public void guardarDatos() {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("datos.txt"));
+            for (Casa casa : condominio.getCasas()) {
+                writer.write("CASA:" + casa.getNumeroCasa());
+                writer.newLine();
+                if (casa.tienePropietario()) {
+                    writer.write("PROPIETARIO:"
+                            + casa.getPropietario().getNombre() + "|"
+                            + casa.getPropietario().getTelefono() + "|"
+                            + casa.getPropietario().getCorreo()
+                    );
+                    writer.newLine();
+                }
+                for (Pago pago : casa.getPagos()) {
+                    writer.write("PAGO:"
+                            + pago.getMes() + "|"
+                            + pago.getAnio() + "|"
+                            + pago.getMonto() + "|"
+                            + pago.getEstado()
+                    );
+                    writer.newLine();
+                }
+            }
+            writer.write("CUOTA:" + condominio.getCuotaMensual());
+            writer.newLine();
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Error al guardar: " + e.getMessage());
+        }
+    }
+
+    public void cargarDatos() {
+        File archivo = new File("datos.txt");
+        if (!archivo.exists()) {
+            return;
+        }
+
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(archivo));
+            String linea;
+            Casa casaActual = null;
+
+            while ((linea = reader.readLine()) != null) {
+                if (linea.startsWith("CASA:")) {
+                    int numero = Integer.parseInt(linea.substring(5));
+                    casaActual = condominio.getCasa(numero);
+
+                } else if (linea.startsWith("PROPIETARIO:") && casaActual != null) {
+                    String[] partes = linea.substring(12).split("\\|");
+                    Propietario p = new Propietario(partes[0], partes[1], partes[2], casaActual.getNumeroCasa());
+                    casaActual.setPropietario(p);
+
+                } else if (linea.startsWith("PAGO:") && casaActual != null) {
+                    String[] partes = linea.substring(5).split("\\|");
+                    Pago pago = new Pago(
+                            Integer.parseInt(partes[0]),
+                            Integer.parseInt(partes[1]),
+                            Double.parseDouble(partes[2]),
+                            partes[3]
+                    );
+                    casaActual.agregarPago(pago);
+
+                } else if (linea.startsWith("CUOTA:")) {
+                    double cuota = Double.parseDouble(linea.substring(6));
+                    condominio.setCuotaMensual(cuota);
+                }
+            }
+            reader.close();
+        } catch (IOException e) {
+            System.out.println("Error al cargar: " + e.getMessage());
+        }
+    }
 }
